@@ -1,4 +1,4 @@
-FROM node:18-alpine AS base
+FROM node:20-alpine AS base
 
 # This Dockerfile is optimized for Turbo in a Monorepo
 # It assumes a specific context so we need to be careful with paths
