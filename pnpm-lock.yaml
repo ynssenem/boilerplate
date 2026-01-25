@@ -106,7 +106,7 @@ importers:
         specifier: workspace:*
         version: link:../../packages/ui
       next:
-        specifier: 16.0.10
+        specifier: ^16.0.10
         version: 16.0.10(@babel/core@7.28.6)(react-dom@19.2.3)(react@19.2.3)
       react:
         specifier: ^19.2.3
@@ -128,17 +128,17 @@ importers:
         specifier: ^22.19.7
         version: 22.19.7
       '@types/react':
-        specifier: 19.1.0
+        specifier: ^19.1.0
         version: 19.1.0
       '@types/react-dom':
-        specifier: 19.1.1
+        specifier: ^19.1.1
         version: 19.1.1(@types/react@19.1.0)
       eslint:
         specifier: ^9.39.2
         version: 9.39.2
       typescript:
-        specifier: 5.8.2
-        version: 5.8.2
+        specifier: ^5.8.2
+        version: 5.9.3
 
   packages/api:
     dependencies:
@@ -157,13 +157,13 @@ importers:
         version: 22.19.7
       ts-loader:
         specifier: ^9.5.4
-        version: 9.5.4(typescript@5.5.4)(webpack@5.104.1)
+        version: 9.5.4(typescript@5.9.3)(webpack@5.104.1)
       ts-node:
         specifier: ^10.9.2
-        version: 10.9.2(@types/node@22.19.7)(typescript@5.5.4)
+        version: 10.9.2(@types/node@22.19.7)(typescript@5.9.3)
       typescript:
-        specifier: 5.5.4
-        version: 5.5.4
+        specifier: ^5.5.4
+        version: 5.9.3
 
   packages/eslint-config:
     devDependencies:
@@ -198,7 +198,7 @@ importers:
         specifier: ^3.8.1
         version: 3.8.1
       typescript:
-        specifier: ^5.9.3
+        specifier: ^5.5.4
         version: 5.9.3
       typescript-eslint:
         specifier: ^8.53.1
@@ -213,10 +213,10 @@ importers:
         specifier: ^29.7.0
         version: 29.7.0(@types/node@22.19.7)(ts-node@10.9.2)
       next:
-        specifier: 16.0.10
+        specifier: ^16.0.10
         version: 16.0.10(@babel/core@7.28.6)(react-dom@19.2.3)(react@19.2.3)
       typescript:
-        specifier: ^5.9.3
+        specifier: ^5.5.4
         version: 5.9.3
 
   packages/typescript-config: {}
@@ -240,17 +240,17 @@ importers:
         specifier: ^22.19.7
         version: 22.19.7
       '@types/react':
-        specifier: 19.1.0
+        specifier: ^19.1.0
         version: 19.1.0
       '@types/react-dom':
-        specifier: 19.1.1
+        specifier: ^19.1.1
         version: 19.1.1(@types/react@19.1.0)
       eslint:
         specifier: ^9.39.2
         version: 9.39.2
       typescript:
-        specifier: 5.8.2
-        version: 5.8.2
+        specifier: ^5.8.2
+        version: 5.9.3
 
 packages:
 
@@ -6310,6 +6310,22 @@ packages:
       webpack: 5.104.1
     dev: true
 
+  /ts-loader@9.5.4(typescript@5.9.3)(webpack@5.104.1):
+    resolution: {integrity: sha512-nCz0rEwunlTZiy6rXFByQU1kVVpCIgUpc/psFiKVrUwrizdnIbRFu8w7bxhUF0X613DYwT4XzrZHpVyMe758hQ==}
+    engines: {node: '>=12.0.0'}
+    peerDependencies:
+      typescript: '*'
+      webpack: ^5.0.0
+    dependencies:
+      chalk: 4.1.2
+      enhanced-resolve: 5.18.4
+      micromatch: 4.0.8
+      semver: 7.7.3
+      source-map: 0.7.6
+      typescript: 5.9.3
+      webpack: 5.104.1
+    dev: true
+
   /ts-node@10.9.2(@types/node@22.19.7)(typescript@5.5.4):
     resolution: {integrity: sha512-f0FFpIdcHgn8zcPSbf1dRevwt047YMnaiJM3u2w2RewrB+fob/zePZcrOyQoLMMO7aBIddLcQIEK5dYjkLnGrQ==}
     hasBin: true
@@ -6337,6 +6353,37 @@ packages:
       diff: 4.0.4
       make-error: 1.3.6
       typescript: 5.5.4
+      v8-compile-cache-lib: 3.0.1
+      yn: 3.1.1
+    dev: true
+
+  /ts-node@10.9.2(@types/node@22.19.7)(typescript@5.9.3):
+    resolution: {integrity: sha512-f0FFpIdcHgn8zcPSbf1dRevwt047YMnaiJM3u2w2RewrB+fob/zePZcrOyQoLMMO7aBIddLcQIEK5dYjkLnGrQ==}
+    hasBin: true
+    peerDependencies:
+      '@swc/core': '>=1.2.50'
+      '@swc/wasm': '>=1.2.50'
+      '@types/node': '*'
+      typescript: '>=2.7'
+    peerDependenciesMeta:
+      '@swc/core':
+        optional: true
+      '@swc/wasm':
+        optional: true
+    dependencies:
+      '@cspotcode/source-map-support': 0.8.1
+      '@tsconfig/node10': 1.0.12
+      '@tsconfig/node12': 1.0.11
+      '@tsconfig/node14': 1.0.3
+      '@tsconfig/node16': 1.0.4
+      '@types/node': 22.19.7
+      acorn: 8.15.0
+      acorn-walk: 8.3.4
+      arg: 4.1.3
+      create-require: 1.1.1
+      diff: 4.0.4
+      make-error: 1.3.6
+      typescript: 5.9.3
       v8-compile-cache-lib: 3.0.1
       yn: 3.1.1
     dev: true
@@ -6527,12 +6574,6 @@ packages:
 
   /typescript@5.5.4:
     resolution: {integrity: sha512-Mtq29sKDAEYP7aljRgtPOpTvOfbwRWlS6dPRzwjdE+C0R4brX/GUyhHSecbHMFLNBLcJIPt9nl9yG5TZ1weH+Q==}
-    engines: {node: '>=14.17'}
-    hasBin: true
-    dev: true
-
-  /typescript@5.8.2:
-    resolution: {integrity: sha512-aJn6wq13/afZp/jT9QZmwEjDqqvSGp1VT5GVg+f/t6/oVyrgXM6BY1h9BRh/O5p3PlUPAe+WuiEZOmb/49RqoQ==}
     engines: {node: '>=14.17'}
     hasBin: true
     dev: true

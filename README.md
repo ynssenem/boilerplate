@@ -1,124 +1,110 @@
-# Turborepo starter
+# Modern Monorepo Boilerplate
 
-This is a community-maintained example. If you experience a problem, please submit a pull request with a fix. GitHub Issues will be closed.
+A production-ready monorepo template featuring **Next.js** (Web) and **NestJS** (API), powered by **Turborepo**.
 
-## Using this example
+[![CI/Registry](https://github.com/ynssenem/boilerplate/actions/workflows/ci-registry.yml/badge.svg)](https://github.com/ynssenem/boilerplate/actions/workflows/ci-registry.yml)
 
-Run the following command:
+## 🚀 Features
+
+- **Monorepo Management**: Efficient build system with [Turborepo](https://turbo.build/).
+- **Frontend**: [Next.js](https://nextjs.org/) 15+ (App Router).
+- **Backend**: [NestJS](https://nestjs.com/) for robust API development.
+- **Type Safety**: End-to-end type safety with [TypeScript](https://www.typescriptlang.org/).
+- **UI Library**: Shared React component library.
+- **Linting & Formatting**: Pre-configured ESLint and Prettier.
+- **CI/CD**: GitHub Actions for automated building, linting, and Docker registry pushing.
+- **Containerization**: Docker support for all applications.
+
+## 📂 Project Structure
 
 ```bash
-npx create-turbo@latest -e with-nestjs
-```
-
-## What's inside?
-
-This Turborepo includes the following packages & apps:
-
-### Apps and Packages
-
-```shell
 .
 ├── apps
-│   ├── api                       # NestJS app (https://nestjs.com).
-│   └── web                       # Next.js app (https://nextjs.org).
-└── packages
-    ├── @repo/api                 # Shared `NestJS` resources.
-    ├── @repo/eslint-config       # `eslint` configurations (includes `prettier`)
-    ├── @repo/jest-config         # `jest` configurations
-    ├── @repo/typescript-config   # `tsconfig.json`s used throughout the monorepo
-    └── @repo/ui                  # Shareable stub React component library.
+│   ├── api                 # NestJS Application
+│   └── web                 # Next.js Application
+├── packages
+│   ├── @repo/api           # Shared Backend DTOs/Interfaces
+│   ├── @repo/ui            # Shared React UI Components
+│   ├── @repo/eslint-config # Shared ESLint Configuration
+│   ├── @repo/jest-config   # Shared Jest Configuration
+│   └── @repo/typescript-config # Shared TS Configs
 ```
 
-Each package and application are mostly written in [TypeScript](https://www.typescriptlang.org/).
+## 🛠️ Getting Started
 
-### Utilities
+### Prerequisites
 
-This `Turborepo` has some additional tools already set for you:
+- Node.js >= 20
+- pnpm (Package Manager)
+- Docker (Optional, for containerized run)
 
-- [TypeScript](https://www.typescriptlang.org/) for static type-safety
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-- [Jest](https://prettier.io) & [Playwright](https://playwright.dev/) for testing
+### Installation
 
-### Commands
+1.  **Clone the repository:**
 
-This `Turborepo` already configured useful commands for all your apps and packages.
+    ```bash
+    git clone https://github.com/ynssenem/boilerplate.git
+    cd boilerplate
+    ```
 
-#### Build
+2.  **Install dependencies:**
+    ```bash
+    pnpm install
+    ```
+
+### Development
+
+Start the development configurations for all apps:
 
 ```bash
-# Will build all the app & packages with the supported `build` script.
-pnpm run build
-
-# ℹ️ If you plan to only build apps individually,
-# Please make sure you've built the packages first.
+pnpm dev
 ```
 
-#### Develop
+This will start:
+
+- **Web**: http://localhost:3000
+- **API**: http://localhost:3001 (or configured port)
+
+### Building
+
+Build all applications and packages:
 
 ```bash
-# Will run the development server for all the app & packages with the supported `dev` script.
-pnpm run dev
+pnpm build
 ```
 
-#### test
+### Linting & Formatting
+
+Check for linting errors:
 
 ```bash
-# Will launch a test suites for all the app & packages with the supported `test` script.
-pnpm run test
-
-# You can launch e2e testes with `test:e2e`
-pnpm run test:e2e
-
-# See `@repo/jest-config` to customize the behavior.
+pnpm lint
 ```
 
-#### Lint
+Format code:
 
 ```bash
-# Will lint all the app & packages with the supported `lint` script.
-# See `@repo/eslint-config` to customize the behavior.
-pnpm run lint
-```
-
-#### Format
-
-```bash
-# Will format all the supported `.ts,.js,json,.tsx,.jsx` files.
-# See `@repo/eslint-config/prettier-base.js` to customize the behavior.
 pnpm format
 ```
 
-### Remote Caching
+## 🚢 Deployment & Registry
 
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
+This project uses **GitHub Container Registry (GHCR)** for storing Docker images. The CI/CD pipeline is managed via GitHub Actions.
 
-Turborepo can use a technique known as [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
+### Environment Strategy
 
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
+We use GitHub Environments to separate configurations:
 
-```bash
-npx turbo login
-```
+- **Development**: Deployed from `develop` branch -> `dev` tags.
+- **Staging**: Deployed from `staging` branch -> `beta` tags.
+- **Production**: Deployed from `main` branch -> `latest` tags.
 
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
+For detailed deployment instructions, please refer to [DEPLOY_GUIDE.md](./DEPLOY_GUIDE.md).
 
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
+## 🤝 Contributing
 
-```bash
-npx turbo link
-```
+We welcome contributions! Please see [CONTRIBUTING.md](./CONTRIBUTING.md) for details on how to get started, our code of conduct, and the pull request process.
 
-## Useful Links
+## 📄 License
 
-This example take some inspiration the [with-nextjs](https://github.com/vercel/turborepo/tree/main/examples/with-nextjs) `Turbo` example and [01-cats-app](https://github.com/nestjs/nest/tree/master/sample/01-cats-app) `NestJs` sample.
-
-Learn more about the power of Turborepo:
-
-- [Tasks](https://turborepo.dev/docs/crafting-your-repository/running-tasks)
-- [Caching](https://turborepo.dev/docs/crafting-your-repository/caching)
-- [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching)
-- [Filtering](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters)
-- [Configuration Options](https://turborepo.dev/docs/reference/configuration)
-- [CLI Usage](https://turborepo.dev/docs/reference/command-line-reference)
+This project is licensed under the MIT License - see the LICENSE file for details.
