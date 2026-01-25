@@ -4,48 +4,42 @@ This project includes a GitHub Actions workflow to automatically build and push 
 
 ## 1. Environment Variable Management
 
-To manage variables specific to each project, we use the **GitHub Repository Settings > Secrets and variables** menu. The system identifies which project a variable belongs to by checking its **prefix**.
+We use **GitHub Environments** to separate configuration for Development, Staging, and Production.
 
-### Rule
+1.  Go to **Settings > Environments** in your GitHub repository.
+2.  Create environments named: `development`, `staging`, `production`.
+3.  Add variables (non-sensitive) and secrets (sensitive) to each environment.
+
+### Naming Rule
 
 Variable naming must follow this format: `{PROJECT_NAME}_{VARIABLE_NAME}` (Uppercase).
+The system automatically strips the prefix during the build.
 
-### Examples
-
-Add these to **GitHub Variables (or Secrets)**:
-
-- `WEB_NEXT_PUBLIC_API_URL`: API URL for the Web project. (Passed as `NEXT_PUBLIC_API_URL` to "web" during Docker build).
-- `API_DB_HOST`: DB host for the API project. (Passed as `DB_HOST` to "api" during Docker build).
-
-> **Note:** The system automatically strips the `WEB_` or `API_` prefix and passes the rest of the name to the build process.
+- `WEB_NEXT_PUBLIC_API_URL` -> becomes `NEXT_PUBLIC_API_URL` for `web` app.
+- `API_DB_HOST` -> becomes `DB_HOST` for `api` app.
 
 ## 2. Triggering the Deployment (Manual)
 
-To start the Build and Registry process:
-
-1. Go to the **Actions** tab in GitHub.
-2. Select the **CI/Registry** workflow from the left sidebar.
-3. Click the **Run workflow** button on the top right.
-4. Fill in the inputs:
-   - **Use workflow from**: Select the branch you want to deploy (e.g., `main`, `beta`, `feature/xyz`).
-   - **App to deploy**: Select which project to build.
-     - `all`: Builds all apps sequentially.
-     - `web`: Builds only the Web application.
-     - `api`: Builds only the API application.
-5. Click **Run workflow** to start.
+1.  Go to **Actions** -> **CI/Registry**.
+2.  Click **Run workflow**.
+3.  Select the Branch:
+    - `develop` -> Deploys to **development** environment.
+    - `staging` -> Deploys to **staging** environment.
+    - `main` -> Deploys to **production** environment.
+4.  Select App (`web`, `api`, or `all`).
 
 ## 3. Versioning and Tags
 
-The system automatically handles tagging based on the selected **Branch** and the **Version** in `package.json`.
+Tags are generated automatically based on the branch and `package.json` version:
 
-| Branch   | Package.json | Generated Image Tags            |
-| -------- | ------------ | ------------------------------- |
-| `main`   | `1.0.0`      | `web:latest`, `web:1.0.0`       |
-| `beta`   | `1.0.0`      | `web:beta`, `web:beta-1.0.0`    |
-| `alpha`  | `1.0.0`      | `web:alpha`, `web:alpha-1.0.0`  |
-| `feat/x` | `1.0.0`      | `web:feat-x` (Uses branch name) |
+| Branch    | Tag Style            | Example (Ver: 1.0.0)         |
+| --------- | -------------------- | ---------------------------- |
+| `develop` | `dev`, `dev-{ver}`   | `web:dev`, `web:dev-1.0.0`   |
+| `staging` | `beta`, `beta-{ver}` | `web:beta`, `web:beta-1.0.0` |
+| `main`    | `latest`, `{ver}`    | `web:latest`, `web:1.0.0`    |
+| `feat/*`  | `feat-{branch}`      | `web:feat-login-page`        |
 
 ### Important
 
-- **Version Control:** If `web:1.0.0` already exists in the registry and you try to deploy from `main` with the same version again, the workflow will **fail**.
-- **Solution:** Manually increment the version in the respective project's `package.json` and commit the change before triggering a new release.
+- **Production Safety:** If you try to deploy to `main` (Production) and the version (e.g., `1.0.0`) already exists in the registry, the workflow will **fail** to prevent accidental overwrites. You must increment the version in `package.json`.
+- **Dev/Staging:** Tags like `dev` and `beta` are "floating" tags and will be overwritten with the latest build. Specific version tags like `dev-1.0.0` are also created.

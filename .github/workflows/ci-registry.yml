@@ -18,14 +18,34 @@ env:
   IMAGE_NAME: ${{ github.repository }}
 
 jobs:
-  # Job to determine which apps to build
+  # Job to determine app matrix and environment
   setup:
     runs-on: ubuntu-latest
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
+      environment: ${{ steps.set-env.outputs.environment }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Determine Environment
+        id: set-env
+        run: |
+          BRANCH="${{ github.ref_name }}"
+          if [ "$BRANCH" == "main" ]; then
+            echo "environment=production" >> $GITHUB_OUTPUT
+            echo "Environment: production"
+          elif [ "$BRANCH" == "staging" ]; then
+             echo "environment=staging" >> $GITHUB_OUTPUT
+             echo "Environment: staging"
+          elif [ "$BRANCH" == "develop" ]; then
+             echo "environment=development" >> $GITHUB_OUTPUT
+             echo "Environment: development"
+          else
+             # Default to development for feature branches or others
+             echo "environment=development" >> $GITHUB_OUTPUT
+             echo "Environment: development (default)"
+          fi
 
       - name: Determine Matrix
         id: set-matrix
@@ -54,6 +74,7 @@ jobs:
   build-and-push:
     needs: setup
     runs-on: ubuntu-latest
+    environment: ${{ needs.setup.outputs.environment }}
     permissions:
       contents: read
       packages: write
@@ -105,13 +126,20 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-${{ matrix.app }}
           tags: |
+            # Production (main) -> latest, 1.0.0
             type=raw,value=latest,enable=${{ github.ref == 'refs/heads/main' }}
             type=raw,value=${{ steps.version.outputs.version }},enable=${{ github.ref == 'refs/heads/main' }}
-            type=raw,value=beta,enable=${{ endsWith(github.ref, 'beta') }}
-            type=raw,value=beta-${{ steps.version.outputs.version }},enable=${{ endsWith(github.ref, 'beta') }}
-            type=raw,value=alpha,enable=${{ endsWith(github.ref, 'alpha') }}
-            type=raw,value=alpha-${{ steps.version.outputs.version }},enable=${{ endsWith(github.ref, 'alpha') }}
-            type=ref,event=branch
+
+            # Staging (staging) -> beta, beta-1.0.0
+            type=raw,value=beta,enable=${{ github.ref == 'refs/heads/staging' }}
+            type=raw,value=beta-${{ steps.version.outputs.version }},enable=${{ github.ref == 'refs/heads/staging' }}
+
+            # Development (develop) -> dev, dev-1.0.0
+            type=raw,value=dev,enable=${{ github.ref == 'refs/heads/develop' }}
+            type=raw,value=dev-${{ steps.version.outputs.version }},enable=${{ github.ref == 'refs/heads/develop' }}
+
+            # Feature branches -> feat-branchname
+            type=ref,event=branch,enable=${{ github.ref != 'refs/heads/main' && github.ref != 'refs/heads/develop' && github.ref != 'refs/heads/staging' }}
 
       - name: Check if Tag Exists
         id: check_tag
@@ -122,13 +150,16 @@ jobs:
           TAG="${{ steps.version.outputs.version }}"
           IMAGE="${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-${{ matrix.app }}"
 
-          # Only check strict version collision if we are on main/beta/alpha branches, 
-          # relying on the metadata-action outputs would be dynamic, but let's check the primary version tag
-          if docker manifest inspect $IMAGE:$TAG > /dev/null 2>&1; then
-             echo "::error::Tag $TAG already exists for $IMAGE. Please increment version in package.json."
-             exit 1
-          else
-             echo "Tag available."
+          # Only check strict version collision if we are on main
+          # For Dev/Staging, we typically allow overwriting or moving tags (like 'dev')
+          # But if you want strictness on dev-1.0.0 as well, we can enable it.
+          # For now, let's enforce strictness only on Production releases (main).
+
+          if [ "${{ github.ref_name }}" == "main" ]; then
+            if docker manifest inspect $IMAGE:$TAG > /dev/null 2>&1; then
+               echo "::error::Tag $TAG already exists for $IMAGE. Please increment version in package.json."
+               exit 1
+            fi
           fi
 
       - name: Resolve Environment Variables
@@ -141,53 +172,16 @@ jobs:
 
           echo "Resolving envs with prefix: $PREFIX"
 
-          # Create line separated build-args string
-          BUILD_ARGS=""
-
-          # Loop through secrets (this requires secrets to be available in env or passed entirely)
-          # GitHub Actions doesn't easily let us iterate raw secrets context in shell for security.
-          # WORKAROUND: We must map specific known keys OR dump context (unsafe).
-          # BETTER APPROACH: Use the 'vars' context for public non-secrets and map secrets manually if possible,
-          # OR use a convention where we assume key names.
-
-          # Since we cannot iterate ${{ secrets }} in run script directly without exposing them,
-          # we have to rely on user inputs or explicitly listed keys. 
-          # However, for a generic solution without listing every key, we can try to use a JSON input of secrets? No.
-
-          # Alternative: The user asked for "project specific ENV".
-          # We will construct a build-args list from the available env context if we map them.
-          # But we can't map *all* secrets to env automatically.
-
-          # Updated strategy: We will just allow specific prefixes if known, OR
-          # we assume the user has added them to the repository variables/secrets using the naming convention.
-          # For the sake of this dynamic script, we'll try to use `tojson(secrets)` but that's redacted.
-
-          # Let's use a smarter way: 
-          # We can't dynamically grab secrets by prefix in the shell easily securely.
-          # We will instruct the user to map them.
-          # BUT, we can iterate environment variables if we map them *all* in the `env` block? No.
-
-          # REFINED STRATEGY FOR THIS STEP:
-          # We will skip dynamic secret iteration (security risk/hard) and instead
-          # assume a standard set or provide instructions.
-          # HOWEVER, for the prompt's request: "detect automatically" - 
-          # The best way in GHA is to dump `toJSON(vars)` which IS accessible.
-          # For Secrets, it's harder.
-
-          # Let's handle `vars` (Configuration) dynamically:
+          # Use Vars Context (Configuration Variables)
+          # We iterate over the 'vars' context which contains environment-specific variables
           VARS_JSON='${{ toJSON(vars) }}'
 
           echo "Processing Variables..."
           echo "$VARS_JSON" | jq -r --arg prefix "$PREFIX" 'to_entries | .[] | select(.key | startswith($prefix)) | "\(.key | sub($prefix; ""))=\(.value)"' > build_vars.env
 
-          # For Secrets, we can't iterate safely unless we pass a specific JSON secret containing all keys, 
-          # or explicitly map them. 
-          # To satisfy usage without complexity, we'll suggest using a JSON secret or assume manual mapping in a real enterprise setup.
-          # BUT, here is a trick: We can pass specific common patterns if needed.
-          # For now, we will just use the Vars dynamic mapping and warn about secrets.
-
-          # Let's convert the .env file to multi-line output for build-args
-          # The docker/build-push-action `build-args` input accepts a list.
+          # Note: Secrets are not automatically dumped here for security.
+          # To use secrets, you should usually map them explicitly or use a specific secret JSON pattern.
+          # For now, this handles configuration variables (VARS).
 
           {
             echo "build_args<<EOF"
@@ -205,5 +199,3 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
             ${{ steps.envs.outputs.build_args }}
-            # Pass any global secrets explicitly if needed
-            # SOME_SECRET=${{ secrets.SomeSecret }}
