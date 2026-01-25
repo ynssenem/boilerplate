@@ -32,7 +32,7 @@ jobs:
         id: set-env
         run: |
           BRANCH="${{ github.ref_name }}"
-          if [ "$BRANCH" == "main" ]; then
+          if [ "$BRANCH" == "production" ]; then
             echo "environment=production" >> $GITHUB_OUTPUT
             echo "Environment: production"
           elif [ "$BRANCH" == "staging" ]; then
@@ -155,7 +155,7 @@ jobs:
           # But if you want strictness on dev-1.0.0 as well, we can enable it.
           # For now, let's enforce strictness only on Production releases (main).
 
-          if [ "${{ github.ref_name }}" == "main" ]; then
+          if [ "${{ github.ref_name }}" == "production" ]; then
             if docker manifest inspect $IMAGE:$TAG > /dev/null 2>&1; then
                echo "::error::Tag $TAG already exists for $IMAGE. Please increment version in package.json."
                exit 1
