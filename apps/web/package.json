@@ -25,5 +25,5 @@
     "start": "next start"
   },
   "type": "module",
-  "version": "0.1.0"
+  "version": "alpha-1.0.0"
 }
