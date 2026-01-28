@@ -1,22 +1,8 @@
 {
-  "dependencies": {
-    "@repo/ui": "workspace:*",
-    "next": "^16.0.10",
-    "react": "^19.2.3",
-    "react-dom": "^19.2.3"
-  },
-  "devDependencies": {
-    "@repo/api": "workspace:*",
-    "@repo/eslint-config": "workspace:*",
-    "@repo/typescript-config": "workspace:*",
-    "@types/node": "^22.19.7",
-    "@types/react": "^19.1.0",
-    "@types/react-dom": "^19.1.1",
-    "eslint": "^9.39.2",
-    "typescript": "^5.8.2"
-  },
   "name": "web",
   "private": true,
+  "version": "alpha-1.0.0",
+  "type": "module",
   "scripts": {
     "build": "next build",
     "check-types": "tsc --noEmit",
@@ -24,6 +10,19 @@
     "lint": "eslint .",
     "start": "next start"
   },
-  "type": "module",
-  "version": "alpha-1.0.0"
+  "dependencies": {
+    "@repo/ui": "workspace:*",
+    "next": "catalog:frontend",
+    "react": "catalog:frontend",
+    "react-dom": "catalog:frontend"
+  },
+  "devDependencies": {
+    "@repo/api": "workspace:*",
+    "@repo/typescript-config": "workspace:*",
+    "@types/node": "catalog:frontenddev",
+    "@types/react": "catalog:frontenddev",
+    "@types/react-dom": "catalog:frontenddev",
+    "eslint": "catalog:frontenddev",
+    "typescript": "catalog:frontenddev"
+  }
 }

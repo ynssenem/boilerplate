@@ -1,15 +1,9 @@
 {
-  "dependencies": {
-    "@nestjs/mapped-types": "^2.1.0"
-  },
-  "devDependencies": {
-    "@repo/eslint-config": "workspace:*",
-    "@repo/typescript-config": "workspace:*",
-    "@types/node": "^22.19.7",
-    "ts-loader": "^9.5.4",
-    "ts-node": "^10.9.2",
-    "typescript": "^5.5.4"
-  },
+  "name": "@repo/api",
+  "private": true,
+  "version": "0.0.0",
+  "types": "./dist/entry.d.ts",
+  "main": "./dist/entry.js",
   "exports": {
     ".": {
       "import": "./dist/entry.js",
@@ -20,21 +14,25 @@
       "require": "./dist/*.js"
     }
   },
-  "files": [
-    "./dist/**"
-  ],
-  "license": "MIT",
-  "main": "./dist/entry.js",
-  "name": "@repo/api",
-  "private": true,
-  "publishConfig": {
-    "access": "public"
-  },
   "scripts": {
     "build": "tsc -b -v",
     "dev": "pnpm build --watch",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\""
   },
-  "types": "./dist/entry.d.ts",
-  "version": "0.0.0"
+  "dependencies": {
+    "@nestjs/mapped-types": "^2.1.0"
+  },
+  "devDependencies": {
+    "@repo/typescript-config": "workspace:*",
+    "@types/node": "catalog:backenddev",
+    "ts-loader": "catalog:backenddev",
+    "ts-node": "catalog:backenddev",
+    "typescript": "catalog:backenddev"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "./dist/**"
+  ]
 }

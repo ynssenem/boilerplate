@@ -1,26 +1,24 @@
 {
-  "dependencies": {
-    "react": "^19.2.3",
-    "react-dom": "^19.2.3"
-  },
-  "devDependencies": {
-    "@repo/eslint-config": "workspace:*",
-    "@repo/typescript-config": "workspace:*",
-    "@types/node": "^22.19.7",
-    "@types/react": "^19.1.0",
-    "@types/react-dom": "^19.1.1",
-    "eslint": "^9.39.2",
-    "typescript": "^5.8.2"
-  },
+  "name": "@repo/ui",
+  "private": true,
+  "version": "0.0.0",
   "exports": {
     "./*": "./src/*.tsx"
   },
-  "name": "@repo/ui",
-  "private": true,
   "scripts": {
     "check-types": "tsc --noEmit",
     "generate:component": "turbo gen react-component",
     "lint": "eslint . --max-warnings 0"
   },
-  "version": "0.0.0"
+  "dependencies": {
+    "react": "catalog:frontend",
+    "react-dom": "catalog:frontend"
+  },
+  "devDependencies": {
+    "@repo/typescript-config": "workspace:*",
+    "@types/node": "catalog:frontenddev",
+    "@types/react": "catalog:frontenddev",
+    "@types/react-dom": "catalog:frontenddev",
+    "typescript": "catalog:frontenddev"
+  }
 }

@@ -1,39 +1,10 @@
 {
-  "dependencies": {
-    "@nestjs/common": "^11.1.12",
-    "@nestjs/core": "^11.1.12",
-    "@nestjs/platform-express": "^11.1.12",
-    "@repo/api": "workspace:*",
-    "reflect-metadata": "^0.2.2",
-    "rxjs": "^7.8.2"
-  },
-  "devDependencies": {
-    "@jest/globals": "^29.7.0",
-    "@nestjs/cli": "^11.0.16",
-    "@nestjs/schematics": "^11.0.9",
-    "@nestjs/testing": "^11.1.12",
-    "@repo/eslint-config": "workspace:*",
-    "@repo/jest-config": "workspace:*",
-    "@repo/typescript-config": "workspace:*",
-    "@types/express": "^4.17.25",
-    "@types/node": "^22.19.7",
-    "@types/supertest": "^6.0.3",
-    "eslint": "^9.39.2",
-    "jest": "^29.7.0",
-    "source-map-support": "^0.5.21",
-    "supertest": "^7.2.2",
-    "ts-jest": "^29.4.6",
-    "ts-loader": "^9.5.4",
-    "ts-node": "^10.9.2",
-    "tsconfig-paths": "^4.2.0",
-    "typescript": "^5.5.4"
-  },
   "name": "api",
   "private": true,
+  "version": "alpha-1.0.0",
   "scripts": {
     "build": "nest build",
     "dev": "nest start --watch",
-    "lint": "eslint \"{src,apps,libs,test}/**/*.ts\"",
     "start": "nest start",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
@@ -42,5 +13,31 @@
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "test:watch": "jest --watch"
   },
-  "version": "alpha-1.0.0"
+  "dependencies": {
+    "@nestjs/common": "catalog:backend",
+    "@nestjs/core": "catalog:backend",
+    "@nestjs/platform-express": "catalog:backend",
+    "@repo/api": "workspace:*",
+    "reflect-metadata": "catalog:backend",
+    "rxjs": "catalog:backend"
+  },
+  "devDependencies": {
+    "@jest/globals": "catalog:backenddev",
+    "@nestjs/cli": "catalog:backenddev",
+    "@nestjs/schematics": "catalog:backenddev",
+    "@nestjs/testing": "catalog:backenddev",
+    "@repo/jest-config": "workspace:*",
+    "@repo/typescript-config": "workspace:*",
+    "@types/express": "catalog:backenddev",
+    "@types/node": "catalog:backenddev",
+    "@types/supertest": "catalog:backenddev",
+    "jest": "catalog:backenddev",
+    "source-map-support": "catalog:backenddev",
+    "supertest": "catalog:backenddev",
+    "ts-jest": "catalog:backenddev",
+    "ts-loader": "catalog:backenddev",
+    "ts-node": "catalog:backenddev",
+    "tsconfig-paths": "catalog:backenddev",
+    "typescript": "catalog:backenddev"
+  }
 }
