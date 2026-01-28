@@ -3,14 +3,27 @@
   "private": true,
   "version": "0.0.0",
   "exports": {
-    "./*": "./src/*.tsx"
+    "./postcss.config": "./src/theme/postcss.config.ts",
+    "./theme": "./src/theme/theme-define.ts",
+    "./global.css": "./src/theme/global.css",
+    "./components/*": "./src/components/index.ts",
+    "./hooks/*": "./src/hooks/index.ts",
+    "./utils/*": "./src/utils/index.ts"
   },
   "scripts": {
     "check-types": "tsc --noEmit",
     "generate:component": "turbo gen react-component",
     "lint": "eslint . --max-warnings 0"
   },
-  "dependencies": {
+  "peerDependencies": {
+    "@mantine/core": "catalog:frontend",
+    "@mantine/hooks": "catalog:frontend",
+    "@mantine/dates": "catalog:frontend",
+    "@mantine/form": "catalog:frontend",
+    "@mantine/modals": "catalog:frontend",
+    "@mantine/notifications": "catalog:frontend",
+    "@tabler/icons-react": "catalog:frontend",
+    "dayjs": "catalog:frontend",
     "react": "catalog:frontend",
     "react-dom": "catalog:frontend"
   },
@@ -19,6 +32,10 @@
     "@types/node": "catalog:frontenddev",
     "@types/react": "catalog:frontenddev",
     "@types/react-dom": "catalog:frontenddev",
+    "postcss": "catalog:frontenddev",
+    "postcss-mixins": "^12.1.2",
+    "postcss-preset-mantine": "catalog:frontenddev",
+    "postcss-simple-vars": "catalog:frontenddev",
     "typescript": "catalog:frontenddev"
   }
 }

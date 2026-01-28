@@ -8,6 +8,14 @@ catalogs:
     "next": "^16.0.10"
     "react": "^19.2.3"
     "react-dom": "^19.2.3"
+    "@mantine/core": "^8.3.13"
+    "@mantine/hooks": "^8.3.13"
+    "@mantine/dates": "^8.3.13"
+    "@mantine/form": "^8.3.13"
+    "@mantine/modals": "^8.3.13"
+    "@mantine/notifications": "^8.3.13"
+    "dayjs": "^1.11.19"
+    "@tabler/icons-react": "^3.36.1"
 
   # Frontend Dev Dependencies (Web Application)
   frontenddev:
@@ -16,6 +24,9 @@ catalogs:
     "@types/react-dom": "^19.1.1"
     "eslint": "^9.39.2"
     "typescript": "^5.8.2"
+    "postcss": "^8.5.6"
+    "postcss-preset-mantine": "^1.18.0"
+    "postcss-simple-vars": "^7.0.1"
 
   # Backend Dependencies (API)
   backend:

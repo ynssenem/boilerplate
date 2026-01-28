@@ -11,10 +11,22 @@
     "start": "next start"
   },
   "dependencies": {
+    "@mantine/core": "catalog:frontend",
+    "@mantine/dates": "catalog:frontend",
+    "@mantine/form": "catalog:frontend",
+    "@mantine/hooks": "catalog:frontend",
+    "@mantine/modals": "catalog:frontend",
+    "@mantine/notifications": "catalog:frontend",
     "@repo/ui": "workspace:*",
+    "@tabler/icons-react": "catalog:frontend",
+    "appwrite": "^21.5.0",
+    "dayjs": "catalog:frontend",
+    "mantine-form-yup-resolver": "^2.0.0",
     "next": "catalog:frontend",
+    "node-appwrite": "^21.1.0",
     "react": "catalog:frontend",
-    "react-dom": "catalog:frontend"
+    "react-dom": "catalog:frontend",
+    "yup": "^1.7.1"
   },
   "devDependencies": {
     "@repo/api": "workspace:*",
