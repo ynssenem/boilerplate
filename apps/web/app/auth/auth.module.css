@@ -1,0 +1,27 @@
+.root {
+  display: flex;
+}
+
+.content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--mantine-spacing-lg);
+  height: 100vh;
+  padding: var(--mantine-spacing-lg);
+}
+
+.image {
+  display: flex;
+  flex-direction: column;
+  width: 40%;
+  background-image: url("/auth-hero.webp");
+  background-size: cover;
+  background-color: var(--mantine-primary-color-filled);
+  background-blend-mode: luminosity;
+  color: white;
+  padding: var(--mantine-spacing-lg);
+  @mixin smaller-than $mantine-breakpoint-xs {
+    display: none;
+  }
+}
