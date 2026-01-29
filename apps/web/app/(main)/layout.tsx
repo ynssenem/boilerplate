@@ -1,22 +1,11 @@
-"use client";
+"use server";
 
-import { AppShell } from "@mantine/core";
 import type { PropsWithChildren } from "react";
-import { MainHeader } from "../../components/organisms/main-header";
+import { getLoggedInUserAction } from "../../actions/auth";
+import PageLayout from "../../components/pages/page-layout";
 
-export default function MainLayout(props: PropsWithChildren) {
-  return (
-    <AppShell
-      header={{
-        height: 60,
-        offset: true,
-        collapsed: false,
-      }}
-    >
-      <AppShell.Header withBorder={false}>
-        <MainHeader />
-      </AppShell.Header>
-      <AppShell.Main>{props.children}</AppShell.Main>
-    </AppShell>
-  );
+export default async function MainLayout(props: PropsWithChildren) {
+  const session = await getLoggedInUserAction();
+
+  return <PageLayout session={session}>{props.children}</PageLayout>;
 }

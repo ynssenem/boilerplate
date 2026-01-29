@@ -19,6 +19,7 @@
     "@mantine/notifications": "catalog:frontend",
     "@repo/ui": "workspace:*",
     "@tabler/icons-react": "catalog:frontend",
+    "@tanstack/react-query": "^5.90.20",
     "appwrite": "^21.5.0",
     "dayjs": "catalog:frontend",
     "mantine-form-yup-resolver": "^2.0.0",

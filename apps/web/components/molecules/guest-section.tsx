@@ -2,7 +2,7 @@ import { Button, Group } from "@mantine/core";
 import { IconKeyFilled } from "@tabler/icons-react";
 import Link from "next/link";
 
-export function GuestHeader() {
+export function GuestSection() {
   return (
     <Group>
       <Link href="/auth">

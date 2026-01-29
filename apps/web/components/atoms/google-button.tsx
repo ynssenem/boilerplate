@@ -1,21 +1,24 @@
-import {
-  Button,
-  type ButtonProps,
-  type PolymorphicComponentProps,
-} from "@mantine/core";
+import { Button } from "@mantine/core";
 import { IconBrandGoogleFilled } from "@tabler/icons-react";
+import { OAuthProvider } from "appwrite";
+import { account } from "../../utils/appwrite-client";
 
-type Props = PolymorphicComponentProps<"button", ButtonProps>;
+export function GoogleButton() {
+  const onHandleClick = () => {
+    account.createOAuth2Token({
+      provider: OAuthProvider.Google,
+      success: "http://localhost:3000/api/auth/oauth",
+    });
+  };
 
-export function GoogleButton(props: Props) {
   return (
     <Button
       leftSection={<IconBrandGoogleFilled size={18} />}
       variant="default"
       color="gray"
-      {...props}
+      onClick={onHandleClick}
     >
-      Continue with Google
+      Google ile giriş yap
     </Button>
   );
 }

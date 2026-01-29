@@ -6,7 +6,7 @@ export default async function proxy(req: NextRequest) {
   const user = await getLoggedInUserAction();
 
   // Auth kontrol
-  if (pathname.startsWith("/auth") && user) {
+  if (pathname.startsWith("/auth") && pathname !== "/auth/logout" && user) {
     return NextResponse.redirect(new URL("/dashboard", req.nextUrl));
   }
 

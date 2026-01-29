@@ -1,6 +1,11 @@
 import { useForm } from "@mantine/form";
+import { notifications } from "@mantine/notifications";
+import { useMutation } from "@tanstack/react-query";
+import { ID } from "appwrite";
 import { yupResolver } from "mantine-form-yup-resolver";
+import { useRouter } from "next/navigation";
 import * as yup from "yup";
+import { account } from "../../../../utils/appwrite-client";
 
 export interface RegisterFormValues {
   email: string;
@@ -30,6 +35,32 @@ const schema = yup.object().shape({
 });
 
 export function useRegisterPage() {
+  const { mutateAsync, isPending } = useMutation({
+    mutationFn: async (values: RegisterFormValues) => {
+      return await account.create({
+        email: values.email,
+        password: values.password,
+        userId: ID.unique(),
+      });
+    },
+    onError: (error) => {
+      notifications.show({
+        color: "red",
+        title: "Error",
+        message: error.message,
+      });
+    },
+    onSuccess: () => {
+      notifications.show({
+        color: "green",
+        title: "Success",
+        message: "Registration successful",
+      });
+    },
+  });
+
+  const router = useRouter();
+
   const form = useForm({
     mode: "uncontrolled",
     initialValues: {
@@ -42,9 +73,13 @@ export function useRegisterPage() {
     validate: yupResolver(schema),
   });
 
-  const handleOnRegisterSubmit = (values: RegisterFormValues) => {
-    console.log(values);
+  const handleOnRegisterSubmit = async (values: RegisterFormValues) => {
+    const user = await mutateAsync(values);
+
+    if (user) {
+      router.push(`/auth?email=${encodeURIComponent(user.email)}`);
+    }
   };
 
-  return { form, handleOnRegisterSubmit };
+  return { form, handleOnRegisterSubmit, isPending };
 }

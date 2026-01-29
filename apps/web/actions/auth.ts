@@ -1,5 +1,9 @@
+import { cookies } from "next/headers";
 import type { Models } from "node-appwrite";
-import { createSessionClient } from "../utils/appwrite";
+import {
+  createSessionClient,
+  SESSION_COOKIE_NAME,
+} from "../utils/appwrite-server";
 
 export async function getLoggedInUserAction(): Promise<Models.User | null> {
   try {
@@ -10,21 +14,15 @@ export async function getLoggedInUserAction(): Promise<Models.User | null> {
   }
 }
 
-export async function registerUserAction({
-  email,
-  password,
-}: {
-  email: string;
-  password: string;
-}): Promise<Models.User | null> {
+export async function logoutAction(): Promise<boolean> {
   try {
     const { account } = await createSessionClient();
-    return await account.create({
-      userId: "[USER_ID]",
-      email,
-      password,
+    await account.deleteSession({
+      sessionId: "current",
     });
+
+    return true;
   } catch {
-    return null;
+    return false;
   }
 }

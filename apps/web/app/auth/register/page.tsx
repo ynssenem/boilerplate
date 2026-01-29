@@ -16,7 +16,7 @@ import { GoogleButton } from "../../../components/atoms/google-button";
 import { useRegisterPage } from "./hooks/use-register-page";
 
 export default function RegisterAuthPage() {
-  const { form, handleOnRegisterSubmit } = useRegisterPage();
+  const { form, handleOnRegisterSubmit, isPending } = useRegisterPage();
 
   return (
     <>
@@ -78,7 +78,9 @@ export default function RegisterAuthPage() {
             />
           </Stack>
 
-          <Button type="submit">Create Account</Button>
+          <Button type="submit" loading={isPending}>
+            Create Account
+          </Button>
         </Stack>
       </form>
 
