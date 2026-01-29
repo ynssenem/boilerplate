@@ -1,11 +1,10 @@
 "use client";
 
 import { Container, Grid, NavLink } from "@mantine/core";
-import { IconLogout } from "@tabler/icons-react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import type { PropsWithChildren } from "react";
 import { authMenus } from "../../../utils/auth-menu";
-import { usePathname } from "next/navigation";
 
 export default function ProfileLayout({ children }: PropsWithChildren) {
   const pathname = usePathname();
@@ -15,8 +14,8 @@ export default function ProfileLayout({ children }: PropsWithChildren) {
 
   return (
     <Container size={"lg"}>
-      <Grid>
-        <Grid.Col span={2}>
+      <Grid gutter={"xl"}>
+        <Grid.Col span={3}>
           {authMenus.map(({ icon: Icon, ...menu }, index) => (
             <NavLink
               key={index.toString()}

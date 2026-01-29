@@ -1,9 +1,6 @@
-import { cookies } from "next/headers";
-import { NextResponse, type NextRequest } from "next/server";
-import {
-  createAdminClient,
-  SESSION_COOKIE_NAME,
-} from "../../../../utils/appwrite-server";
+import { type NextRequest, NextResponse } from "next/server";
+import { setAppwriteCookie } from "../../../../utils/appwrite-cookie";
+import { createAdminClient } from "../../../../utils/appwrite-server";
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
@@ -23,7 +20,8 @@ export async function GET(req: NextRequest) {
       userId,
     })
     .then(async (res) => {
-      (await cookies()).set(SESSION_COOKIE_NAME, res.secret);
+      // (await cookies()).set(SESSION_COOKIE_NAME, res.secret);
+      await setAppwriteCookie(res.secret);
     });
 
   const response = NextResponse.redirect(new URL("/", req.url), 303);

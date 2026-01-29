@@ -1,14 +1,13 @@
-import { cookies } from "next/headers";
 import { Account, Client } from "node-appwrite";
-
-export const SESSION_COOKIE_NAME = "a_session_console";
+import { getAppwriteCookie } from "./appwrite-cookie";
 
 export async function createSessionClient() {
   const client = new Client()
     .setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT)
     .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID);
 
-  const session = (await cookies()).get(SESSION_COOKIE_NAME);
+  // const session = (await cookies()).get(SESSION_COOKIE_NAME);
+  const session = await getAppwriteCookie();
 
   if (!session || !session.value) {
     throw new Error("No session");

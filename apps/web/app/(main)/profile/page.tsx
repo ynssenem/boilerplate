@@ -1,3 +1,12 @@
+"use client";
+
+import { Stack } from "@mantine/core";
+import { UpdateName } from "./components/update-name";
+
 export default function ProfilePage() {
-  return <div>Profile</div>;
+  return (
+    <Stack>
+      <UpdateName />
+    </Stack>
+  );
 }
