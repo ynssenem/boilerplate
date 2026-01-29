@@ -10,16 +10,13 @@ import {
 } from "@mantine/core";
 import {
   IconDeviceDesktopFilled,
-  IconKeyFilled,
   IconLogout,
-  IconMessageChatbotFilled,
   IconMoonFilled,
-  IconShieldLockFilled,
   IconSunHighFilled,
-  IconUserFilled,
 } from "@tabler/icons-react";
 import Link from "next/link";
 import type { Models } from "node-appwrite";
+import { authMenus } from "../../utils/auth-menu";
 
 type Props = {
   session: Models.User;
@@ -45,18 +42,18 @@ export function AuthSection({ session }: Props) {
             <div>{session.email}</div>
           </Menu.Label>
           <Menu.Divider />
-          <Menu.Item rightSection={<IconUserFilled size={18} />}>
-            Kişisel Bilgiler
-          </Menu.Item>
-          <Menu.Item rightSection={<IconShieldLockFilled size={18} />}>
-            MFA
-          </Menu.Item>
-          <Menu.Item rightSection={<IconKeyFilled size={18} />}>
-            Güvenlik Ayarları
-          </Menu.Item>
-          <Menu.Item rightSection={<IconMessageChatbotFilled size={18} />}>
-            Yardım ve Destek
-          </Menu.Item>
+          {authMenus.map(({ icon: Icon, label, ...menu }, index) => (
+            <Menu.Item
+              key={index.toString()}
+              rightSection={Icon && <Icon size={18} />}
+              component={Link}
+              variant="filled"
+              href={menu.href}
+              c={menu.c}
+            >
+              {label}
+            </Menu.Item>
+          ))}
           <Menu.Item
             component={"a"}
             c={"red"}

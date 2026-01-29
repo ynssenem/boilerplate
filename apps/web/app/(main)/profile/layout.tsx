@@ -1,16 +1,14 @@
 "use client";
 
 import { Container, Grid, NavLink } from "@mantine/core";
-import {
-  IconKeyFilled,
-  IconLogout,
-  IconMessageChatbotFilled,
-  IconShieldLockFilled,
-  IconUserFilled,
-} from "@tabler/icons-react";
+import { IconLogout } from "@tabler/icons-react";
+import Link from "next/link";
 import type { PropsWithChildren } from "react";
+import { authMenus } from "../../../utils/auth-menu";
+import { usePathname } from "next/navigation";
 
 export default function ProfileLayout({ children }: PropsWithChildren) {
+  const pathname = usePathname();
   const iconProps = {
     size: 18,
   };
@@ -18,33 +16,17 @@ export default function ProfileLayout({ children }: PropsWithChildren) {
   return (
     <Container size={"lg"}>
       <Grid>
-        <Grid.Col span={4}>
-          <NavLink
-            label="Kişisel Bilgiler"
-            href="/profile"
-            leftSection={<IconUserFilled {...iconProps} />}
-          />
-          <NavLink
-            label="Çok Faktörlü Kimlik Doğrulama"
-            href="/profile"
-            leftSection={<IconShieldLockFilled {...iconProps} />}
-          />
-          <NavLink
-            label="Güvenlik Ayarları"
-            href="/profile"
-            leftSection={<IconKeyFilled {...iconProps} />}
-          />
-          <NavLink
-            label="Yardım ve Destek"
-            href="/profile"
-            leftSection={<IconMessageChatbotFilled {...iconProps} />}
-          />
-          <NavLink
-            label="Çıkış Yap"
-            c={"red"}
-            href="/profile"
-            leftSection={<IconLogout {...iconProps} />}
-          />
+        <Grid.Col span={2}>
+          {authMenus.map(({ icon: Icon, ...menu }, index) => (
+            <NavLink
+              key={index.toString()}
+              component={Link}
+              active={pathname === menu.href}
+              label={menu.label}
+              href={menu.href}
+              leftSection={Icon && <Icon {...iconProps} />}
+            />
+          ))}
         </Grid.Col>
         <Grid.Col span={"auto"}>{children}</Grid.Col>
       </Grid>
