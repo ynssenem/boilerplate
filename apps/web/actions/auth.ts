@@ -1,16 +1,14 @@
-import { cookies } from "next/headers";
 import type { Models } from "node-appwrite";
-import {
-  createSessionClient,
-  SESSION_COOKIE_NAME,
-} from "../utils/appwrite-server";
+import { createSessionClient } from "../utils/appwrite-server";
 
-export async function getLoggedInUserAction(): Promise<Models.User | null> {
+export async function getLoggedInUserAction(): Promise<
+  Models.User | undefined
+> {
   try {
     const { account } = await createSessionClient();
     return await account.get();
   } catch {
-    return null;
+    return undefined;
   }
 }
 

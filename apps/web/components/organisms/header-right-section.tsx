@@ -3,7 +3,7 @@ import { AuthSection } from "../molecules/auth-section";
 import { GuestSection } from "../molecules/guest-section";
 
 type Props = {
-  session?: Models.Session;
+  session?: Models.User;
 };
 
 export function HeaderRightSection({ session }: Props) {

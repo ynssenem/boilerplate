@@ -7,7 +7,7 @@ import { Header } from "../../components/templates/header";
 import { HeaderRightSection } from "../organisms/header-right-section";
 
 type Props = PropsWithChildren<{
-  session: Models.Session;
+  session?: Models.User;
 }>;
 
 export default function PageLayout({ session, ...props }: Props) {

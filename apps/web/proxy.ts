@@ -10,11 +10,6 @@ export default async function proxy(req: NextRequest) {
     return NextResponse.redirect(new URL("/dashboard", req.nextUrl));
   }
 
-  // Dashboard kontrol
-  if (pathname.startsWith("/dashboard") && !user) {
-    return NextResponse.redirect(new URL("/auth", req.nextUrl));
-  }
-
   return NextResponse.next();
 }
 
