@@ -1,26 +1,18 @@
-import type { Models } from "node-appwrite";
-import { createSessionClient } from "../utils/appwrite-server";
+import { account } from "@/utils/appwrite-client";
 
-export async function getLoggedInUserAction(): Promise<
-  Models.User | undefined
-> {
+export async function getUserAction() {
   try {
-    const { account } = await createSessionClient();
-    return await account.get();
-  } catch {
-    return undefined;
+    return await account.getSession({
+      sessionId: "current",
+    });
+  } catch (error) {
+    // 401 hatasını burada yakalayıp null dönüyoruz
+    return null;
   }
 }
 
-export async function logoutAction(): Promise<boolean> {
-  try {
-    const { account } = await createSessionClient();
-    await account.deleteSession({
-      sessionId: "current",
-    });
-
-    return true;
-  } catch {
-    return false;
-  }
+export async function logoutAction(): Promise<void> {
+  await account.deleteSession({
+    sessionId: "current",
+  });
 }

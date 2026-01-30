@@ -1,3 +1,4 @@
+import { account } from "@/utils/appwrite-client";
 import { useForm } from "@mantine/form";
 import { notifications } from "@mantine/notifications";
 import { useMutation } from "@tanstack/react-query";
@@ -15,21 +16,12 @@ export function useLoginPage() {
 
   const { mutateAsync, isPending } = useMutation({
     mutationFn: async (values: any) => {
-      const response = await fetch("/api/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(values),
+      const login = await account.createEmailPasswordSession({
+        email: values.email,
+        password: values.password,
       });
 
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.message);
-      }
-
-      const data = await response.json();
-      return data;
+      return login;
     },
     onError: (error) => {
       notifications.show({

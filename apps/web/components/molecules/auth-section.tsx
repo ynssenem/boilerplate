@@ -14,16 +14,18 @@ import {
   IconMoonFilled,
   IconSunHighFilled,
 } from "@tabler/icons-react";
+import { useAuth } from "hooks/use-auth";
 import Link from "next/link";
-import type { Models } from "node-appwrite";
-import { authMenus } from "../../utils/auth-menu";
+import { authMenus } from "@/utils/auth-menu";
 
-type Props = {
-  session: Models.User;
-};
-
-export function AuthSection({ session }: Props) {
+export function AuthSection() {
+  const { logout: logoutHook, user } = useAuth();
   const { setColorScheme } = useMantineColorScheme();
+
+  const logout = async (): Promise<void> => {
+    await logoutHook();
+    window.location.href = "/";
+  };
 
   return (
     <Group>
@@ -32,14 +34,14 @@ export function AuthSection({ session }: Props) {
       </Link>
       <Menu position="bottom-end" width={230}>
         <Menu.Target>
-          <Avatar name={session.name} />
+          <Avatar name={"Yunus"} />
         </Menu.Target>
         <Menu.Dropdown>
           <Menu.Label>
             <Text size="sm" fw={"bold"}>
-              {session.name}
+              {user?.name}
             </Text>
-            <div>{session.email}</div>
+            <div>{user?.email}</div>
           </Menu.Label>
           <Menu.Divider />
           {authMenus.map(({ icon: Icon, label, ...menu }, index) => (
@@ -54,14 +56,15 @@ export function AuthSection({ session }: Props) {
               {label}
             </Menu.Item>
           ))}
+
           <Menu.Item
-            component={"a"}
             c={"red"}
             rightSection={<IconLogout size={18} />}
-            href={"/auth/logout"}
+            onClick={logout}
           >
             Çıkış Yap
           </Menu.Item>
+
           <Menu.Divider />
           <Menu.Label>Görünüm</Menu.Label>
           <Menu.Item

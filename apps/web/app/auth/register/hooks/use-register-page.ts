@@ -1,3 +1,4 @@
+import { account } from "@/utils/appwrite-client";
 import { useForm } from "@mantine/form";
 import { notifications } from "@mantine/notifications";
 import { useMutation } from "@tanstack/react-query";
@@ -5,7 +6,6 @@ import { ID } from "appwrite";
 import { yupResolver } from "mantine-form-yup-resolver";
 import { useRouter } from "next/navigation";
 import * as yup from "yup";
-import { account } from "../../../../utils/appwrite-client";
 
 export interface RegisterFormValues {
   email: string;

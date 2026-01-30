@@ -1,12 +1,12 @@
 import { Button } from "@mantine/core";
 import { OAuthProvider } from "appwrite";
-import { account } from "../../utils/appwrite-client";
+import { account } from "@/utils/appwrite-client";
 
 export function GoogleButton() {
   const onHandleClick = () => {
-    account.createOAuth2Token({
+    account.createOAuth2Session({
       provider: OAuthProvider.Google,
-      success: "http://localhost:3000/api/auth/oauth",
+      success: window.origin,
     });
   };
 

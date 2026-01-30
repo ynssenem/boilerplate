@@ -1,36 +1,10 @@
-import { Account, Client } from "node-appwrite";
-import { getAppwriteCookie } from "./appwrite-cookie";
+"use server";
 
-export async function createSessionClient() {
-  const client = new Client()
-    .setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT)
-    .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID);
+import { Client, Databases } from "node-appwrite";
 
-  // const session = (await cookies()).get(SESSION_COOKIE_NAME);
-  const session = await getAppwriteCookie();
+const client = new Client()
+  .setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT)
+  .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID)
+  .setKey(process.env.APPWRITE_KEY);
 
-  if (!session || !session.value) {
-    throw new Error("No session");
-  }
-
-  client.setSession(session.value);
-
-  return {
-    get account() {
-      return new Account(client);
-    },
-  };
-}
-
-export async function createAdminClient() {
-  const client = new Client()
-    .setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT)
-    .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID)
-    .setKey(process.env.APPWRITE_KEY);
-
-  return {
-    get account() {
-      return new Account(client);
-    },
-  };
-}
+export const ssrDatabases = new Databases(client);
